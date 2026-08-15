@@ -1,0 +1,10 @@
+# binários compilados dos exemplos em C
+c/memoria
+c/contigua
+c/encadeada
+*.o
+*.out
+
+# Python
+__pycache__/
+*.pyc
