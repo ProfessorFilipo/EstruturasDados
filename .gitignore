@@ -5,6 +5,18 @@ c/encadeada
 *.o
 *.out
 
+# binários compilados das soluções em C
+solucoes/c/ex01
+solucoes/c/ex05_contigua
+solucoes/c/ex05_encadeada
+solucoes/c/ex06
+solucoes/c/ex08
+solucoes/c/ex09
+solucoes/c/ex11
+solucoes/c/ex12
+solucoes/c/ex13
+solucoes/c/ex14
+
 # Python
 __pycache__/
 *.pyc
