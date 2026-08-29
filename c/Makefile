@@ -1,18 +1,24 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -std=c11
+CC = cc
+CFLAGS = -std=c11 -Wall -Wextra -pedantic
 
-.PHONY: all clean
+.PHONY: all test clean
 
-all: memoria contigua encadeada
+all: demo_pilha demo_fila central_impressao testes
 
-memoria: memoria_ponteiros.c
-	$(CC) $(CFLAGS) -o memoria memoria_ponteiros.c
+demo_pilha: demo_pilha.c pilha.c pilha.h
+	$(CC) $(CFLAGS) pilha.c demo_pilha.c -o demo_pilha
 
-contigua: main_contigua.c lista_contigua.c lista_contigua.h
-	$(CC) $(CFLAGS) -o contigua main_contigua.c lista_contigua.c
+demo_fila: demo_fila.c fila.c fila.h
+	$(CC) $(CFLAGS) fila.c demo_fila.c -o demo_fila
 
-encadeada: main_encadeada.c lista_encadeada.c lista_encadeada.h
-	$(CC) $(CFLAGS) -o encadeada main_encadeada.c lista_encadeada.c
+central_impressao: central_impressao.c pilha.c pilha.h fila.c fila.h
+	$(CC) $(CFLAGS) pilha.c fila.c central_impressao.c -o central_impressao
+
+testes: testes.c pilha.c pilha.h fila.c fila.h
+	$(CC) $(CFLAGS) pilha.c fila.c testes.c -o testes
+
+test: testes
+	./testes
 
 clean:
-	rm -f memoria contigua encadeada
+	rm -f demo_pilha demo_fila central_impressao testes
