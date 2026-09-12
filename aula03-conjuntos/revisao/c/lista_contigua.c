@@ -82,3 +82,23 @@ void lista_percorrer(const ListaContigua *lista) {
         printf("[%d] = %d\n", i, lista->dados[i]);
     }
 }
+
+int main()
+{
+    ListaContigua lista;
+    lista_criar(&lista);
+
+    // insere 3 valores e mostra
+    lista_inserir_inicio(&lista, 15);
+    lista_inserir_inicio(&lista, 25);
+    lista_inserir_inicio(&lista, 35);
+    lista_percorrer(&lista);
+
+    // remove o valor do meio
+    printf("\n depois de removido:\n");
+    int valor;
+    lista_remover(&lista, 1, &valor);
+    lista_percorrer(&lista);
+
+}
+
