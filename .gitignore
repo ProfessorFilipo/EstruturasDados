@@ -19,6 +19,13 @@ aula02-pilhas-filas/c/demo_fila
 aula02-pilhas-filas/c/central_impressao
 aula02-pilhas-filas/c/testes
 
+# binários compilados — Aula 3
+aula03-conjuntos/c/demo_conjunto
+aula03-conjuntos/revisao/c/contigua
+aula03-conjuntos/revisao/c/encadeada
+aula03-conjuntos/revisao/c/demo_pilha
+aula03-conjuntos/revisao/c/demo_fila
+
 # genérico
 *.o
 *.out

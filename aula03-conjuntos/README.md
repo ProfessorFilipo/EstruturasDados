@@ -9,6 +9,11 @@ conteúdo novo: o TAD Conjunto — em **C** e em **Python**.
 ## Estrutura desta pasta
 
 ```
+revisao/
+└── c/                      # Bloco 2: cópia dos demos de Lista/Pilha/Fila
+    ├── contigua, encadeada (Aula 1)
+    ├── demo_pilha, demo_fila (Aula 2)
+    └── Makefile
 c/
 ├── demo_conjunto.c         # Bloco 4: demo ao vivo — Conjunto sobre array
 └── Makefile
@@ -22,13 +27,19 @@ solucoes/
 
 ## Sobre o Bloco 2 (consolidação de Lista, Pilha e Fila)
 
-Esse bloco não traz código novo — é execução ao vivo dos demos que já
-existem nos repositórios das aulas anteriores:
+Esse bloco não traz código novo — é reexecução dos demos das Aulas 1 e
+2, copiados para `revisao/c/` só por conveniência (evita abrir a pasta
+de outra aula durante a apresentação). O código-fonte de referência
+continua sendo `aula01-estruturas-lineares/` e `aula02-pilhas-filas/`.
 
-- [`../aula01-estruturas-lineares/c/contigua`](../aula01-estruturas-lineares/c/) e `encadeada` (Lista)
-- [`../aula02-pilhas-filas/c/demo_pilha`](../aula02-pilhas-filas/c/) e `demo_fila` (Pilha/Fila)
-
-Veja o README de cada pasta para as instruções de compilação/execução.
+```bash
+cd revisao/c
+make
+./contigua
+./encadeada
+./demo_pilha
+./demo_fila
+```
 
 ## Como executar os demos desta aula
 
