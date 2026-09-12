@@ -1,21 +1,27 @@
-# binários compilados dos exemplos em C
-c/memoria
-c/contigua
-c/encadeada
+# binários compilados — Aula 1
+aula01-estruturas-lineares/c/memoria
+aula01-estruturas-lineares/c/contigua
+aula01-estruturas-lineares/c/encadeada
+aula01-estruturas-lineares/solucoes/c/ex01
+aula01-estruturas-lineares/solucoes/c/ex05_contigua
+aula01-estruturas-lineares/solucoes/c/ex05_encadeada
+aula01-estruturas-lineares/solucoes/c/ex06
+aula01-estruturas-lineares/solucoes/c/ex08
+aula01-estruturas-lineares/solucoes/c/ex09
+aula01-estruturas-lineares/solucoes/c/ex11
+aula01-estruturas-lineares/solucoes/c/ex12
+aula01-estruturas-lineares/solucoes/c/ex13
+aula01-estruturas-lineares/solucoes/c/ex14
+
+# binários compilados — Aula 2
+aula02-pilhas-filas/c/demo_pilha
+aula02-pilhas-filas/c/demo_fila
+aula02-pilhas-filas/c/central_impressao
+aula02-pilhas-filas/c/testes
+
+# genérico
 *.o
 *.out
-
-# binários compilados das soluções em C
-solucoes/c/ex01
-solucoes/c/ex05_contigua
-solucoes/c/ex05_encadeada
-solucoes/c/ex06
-solucoes/c/ex08
-solucoes/c/ex09
-solucoes/c/ex11
-solucoes/c/ex12
-solucoes/c/ex13
-solucoes/c/ex14
 
 # Python
 __pycache__/
