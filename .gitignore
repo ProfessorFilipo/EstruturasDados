@@ -26,3 +26,6 @@ aula02-pilhas-filas/c/testes
 # Python
 __pycache__/
 *.pyc
+
+# configuracoes de IDE (PyCharm)
+.idea/
