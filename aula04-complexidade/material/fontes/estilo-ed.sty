@@ -1,0 +1,216 @@
+% =====================================================================
+% estilo-ed.sty
+% Estruturas de Dados — UniLasalle EAD — Prof. Filipo Novo Mór — 2026
+%
+% Modelo visual comum ao enunciado da atividade e à apostila da Aula 4,
+% coerente com os slides das Aulas 1 a 4 (mesma paleta, Calibri/Carlito,
+% títulos pixelados, código com realce de sintaxe).
+%
+% Compilar com XeLaTeX (no Overleaf: Menu > Compiler > XeLaTeX).
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{estilo-ed}[2026/09/26 Estruturas de Dados - modelo visual]
+
+% ---------------------------------------------------------------------
+% Idioma, fontes e matemática
+% ---------------------------------------------------------------------
+\RequirePackage{babel}
+\babelprovide[import,main]{brazilian}
+\RequirePackage{amsmath}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage{csquotes}
+% Carlito tem as mesmas métricas e o mesmo desenho da Calibri dos slides.
+\setmainfont{Carlito}[Extension=.ttf, UprightFont=*-Regular, BoldFont=*-Bold,
+  ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic]
+\setsansfont{Carlito}[Extension=.ttf, UprightFont=*-Regular, BoldFont=*-Bold,
+  ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic]
+\setmonofont{DejaVuSansMono}[Extension=.ttf, BoldFont=*-Bold,
+  ItalicFont=*-Oblique, BoldItalicFont=*-BoldOblique, Scale=0.84]
+\setmathfont{latinmodern-math.otf}
+% símbolos que a Carlito não tem (★)
+\newfontfamily\edsimbolos{DejaVuSans}[Extension=.ttf, BoldFont=*-Bold]
+\newcommand{\estrela}{{\edsimbolos ★}}
+
+% ---------------------------------------------------------------------
+% Página
+% ---------------------------------------------------------------------
+\RequirePackage[a4paper, top=2.4cm, bottom=2.3cm, left=2.3cm, right=2.3cm,
+  headheight=14pt, headsep=0.8cm, footskip=1.1cm]{geometry}
+\RequirePackage{microtype}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\linespread{1.08}
+\setlength{\emergencystretch}{3em}
+
+% ---------------------------------------------------------------------
+% Cores da disciplina (as mesmas dos slides)
+% ---------------------------------------------------------------------
+\RequirePackage[table]{xcolor}
+\definecolor{edfundo}{HTML}{F1F4EF}
+\definecolor{edfundo2}{HTML}{E7ECE3}
+\definecolor{edtexto}{HTML}{10181C}
+\definecolor{edteal}{HTML}{2E8B79}
+\definecolor{edverde}{HTML}{1C5C4F}
+\definecolor{edlaranja}{HTML}{E8871E}
+\definecolor{edlaranjaclaro}{HTML}{FDF0E1}
+\definecolor{edtealclaro}{HTML}{E3F0ED}
+\definecolor{edcinza}{HTML}{7A8580}
+\definecolor{edcinzaclaro}{HTML}{D5DDD3}
+\color{edtexto}
+
+% ---------------------------------------------------------------------
+% Pacotes gerais
+% ---------------------------------------------------------------------
+\RequirePackage{graphicx}
+\RequirePackage{array, tabularx, booktabs, longtable, multirow}
+\RequirePackage{enumitem}
+\RequirePackage{tikz}
+\usetikzlibrary{calc, positioning, arrows.meta, shapes.geometric}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{listings}
+\RequirePackage{fancyvrb}
+\RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+\RequirePackage{caption}
+\RequirePackage{float}
+\RequirePackage{etoolbox}
+\RequirePackage{needspace}
+\RequirePackage[obeyspaces,spaces]{url}
+\RequirePackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=true, linkcolor=edverde, urlcolor=edteal, citecolor=edverde}
+
+\setlist{itemsep=0.25em, topsep=0.3em, leftmargin=1.4em}
+\setlist[itemize]{label={\color{edteal}\rule[0.18em]{0.42em}{0.42em}}}
+\setlist[enumerate]{label={\color{edverde}\bfseries\arabic*.}}
+
+\captionsetup{font={small,it}, labelfont={bf,color=edverde}, labelsep=period,
+  justification=centering}
+
+% ---------------------------------------------------------------------
+% Ícone da disciplina: 2 x 2 quadradinhos verde e laranja (como nos slides)
+% ---------------------------------------------------------------------
+\newcommand{\edlogo}[1][0.55em]{%
+  \begin{tikzpicture}[baseline=0.02em, x=#1, y=#1]
+    \fill[edteal]    (0,1) rectangle ++(0.9,0.9);
+    \fill[edlaranja] (1,1) rectangle ++(0.9,0.9);
+    \fill[edlaranja] (0,0) rectangle ++(0.9,0.9);
+    \fill[edteal]    (1,0) rectangle ++(0.9,0.9);
+  \end{tikzpicture}}
+
+% ---------------------------------------------------------------------
+% Títulos
+% ---------------------------------------------------------------------
+\titleformat{\section}{\needspace{7\baselineskip}\Large\bfseries\color{edverde}}
+  {\edlogo[0.42em]\hspace{0.5em}\thesection.}{0.4em}{}
+\titlespacing*{\section}{0pt}{1.5em}{0.6em}
+\titleformat{\subsection}{\needspace{5\baselineskip}\large\bfseries\color{edteal}}{\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.35em}
+\titleformat{\subsubsection}{\needspace{4\baselineskip}\normalsize\bfseries\color{edtexto}}{}{0em}{}
+\titlespacing*{\subsubsection}{0pt}{0.8em}{0.2em}
+
+% ---------------------------------------------------------------------
+% Cabeçalho e rodapé
+% ---------------------------------------------------------------------
+\newcommand{\edcabecalho}{ESTRUTURAS DE DADOS}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\color{edcinzaclaro}\hrule height \headrulewidth width \headwidth}
+\fancyhead[L]{\footnotesize\bfseries\color{edcinza}\edcabecalho}
+\fancyhead[R]{\edlogo[0.38em]}
+\fancyfoot[L]{\footnotesize\color{edcinza}Prof. Filipo Novo Mór - filipomor.com - 2026}
+\fancyfoot[R]{\footnotesize\color{edcinza}Página \thepage\ de \pageref*{LastPage}}
+\fancypagestyle{primeira}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[L]{\footnotesize\color{edcinza}Prof. Filipo Novo Mór - filipomor.com - 2026}%
+  \fancyfoot[R]{\footnotesize\color{edcinza}Página \thepage\ de \pageref*{LastPage}}}
+
+% ---------------------------------------------------------------------
+% Caixas destacadas
+%   \begin{caixa}[TÍTULO]{cor do rótulo}{cor de fundo} ... \end{caixa}
+% ---------------------------------------------------------------------
+\newtcolorbox{caixa}[3][]{enhanced, breakable, colback=#3, colframe=#3,
+  boxrule=0pt, arc=2pt, left=10pt, right=10pt, top=7pt, bottom=7pt,
+  borderline west={3pt}{0pt}{#2},
+  fontupper=\normalsize,
+  before upper={\ifstrempty{#1}{}{{\bfseries\color{#2}\MakeUppercase{#1}}\hspace{0.7em}}},
+  before skip=0.7em, after skip=0.7em}
+\newenvironment{objetivo}{\begin{caixa}[Objetivo]{edlaranja}{edlaranjaclaro}}{\end{caixa}}
+\newenvironment{checkpoint}{\begin{caixa}[Checkpoint]{edverde}{edfundo2}}{\end{caixa}}
+\newenvironment{atencao}{\begin{caixa}[Atenção]{edlaranja}{edlaranjaclaro}}{\end{caixa}}
+\newenvironment{dica}{\begin{caixa}[Dica]{edteal}{edtealclaro}}{\end{caixa}}
+\newenvironment{naapostila}{\begin{caixa}[Na apostila]{edverde}{edtealclaro}}{\end{caixa}}
+\newenvironment{semEntrega}{\begin{caixa}[Sem entrega]{edverde}{edfundo2}}{\end{caixa}}
+
+% ---------------------------------------------------------------------
+% Código-fonte (mesmas cores dos slides, sobre fundo claro para imprimir)
+% ---------------------------------------------------------------------
+\definecolor{codpalavra}{HTML}{1C5C4F}
+\definecolor{codtexto}{HTML}{B35C00}
+\definecolor{codcomentario}{HTML}{7A8580}
+\definecolor{codnumero}{HTML}{2E8B79}
+\lstdefinestyle{edbase}{
+  basicstyle=\ttfamily\small\color{edtexto},
+  columns=fullflexible, keepspaces=true, showstringspaces=false,
+  breaklines=true, breakatwhitespace=true, tabsize=4,
+  backgroundcolor=\color{edfundo}, frame=leftline, framerule=3pt,
+  rulecolor=\color{edteal}, xleftmargin=6pt, framexleftmargin=6pt,
+  aboveskip=0.8em, belowskip=0.8em, upquote=true,
+  keywordstyle=\color{codpalavra}\bfseries,
+  stringstyle=\color{codtexto},
+  commentstyle=\color{codcomentario}\itshape,
+  literate={ã}{{ã}}1 {á}{{á}}1 {à}{{à}}1 {â}{{â}}1 {é}{{é}}1 {ê}{{ê}}1
+           {í}{{í}}1 {ó}{{ó}}1 {ô}{{ô}}1 {õ}{{õ}}1 {ú}{{ú}}1 {ç}{{ç}}1
+           {Á}{{Á}}1 {É}{{É}}1 {Í}{{Í}}1 {Ó}{{Ó}}1 {Ú}{{Ú}}1 {Ç}{{Ç}}1
+           {—}{{—}}1 {→}{{→}}1 {├}{{├}}1 {│}{{│}}1 {└}{{└}}1 {─}{{─}}1
+}
+\lstdefinestyle{python}{style=edbase, language=Python,
+  morekeywords={True, False, None, self}}
+\lstdefinestyle{c}{style=edbase, language=C,
+  morekeywords={size_t}}
+\lstdefinestyle{terminal}{style=edbase, language={}, backgroundcolor=\color{edfundo2},
+  rulecolor=\color{edcinza}, basicstyle=\ttfamily\footnotesize\color{edtexto}}
+\lstdefinestyle{arvore}{style=edbase, language={}, backgroundcolor=\color{white},
+  frame=none, basicstyle=\ttfamily\small\color{edtexto}}
+\lstset{style=python}
+% um bloco de código só começa se couberem cerca de 10 linhas na página
+\AtBeginEnvironment{lstlisting}{\needspace{10\baselineskip}}
+
+% Árvores de pastas e textos com desenho de caixa (├ │ └): o listings
+% embaralha esses caracteres, então usamos o Verbatim do fancyvrb.
+\DefineVerbatimEnvironment{arvore}{Verbatim}{fontsize=\small, formatcom=\color{edtexto}}
+
+% código dentro do texto e de tabelas: \codigo{nome_da_funcao()}
+% (não use % nem # dentro de \codigo; para eles, use \lstinline[style=inline]|...|)
+\lstdefinestyle{inline}{style=edbase, basicstyle=\ttfamily\color{edverde},
+  keywordstyle=, stringstyle=, commentstyle=, backgroundcolor=, frame=none}
+% \codigo usa o mecanismo do pacote url: aceita _ sem escape e permite
+% quebrar a linha depois de _ . / ( e , em nomes longos.
+\DeclareUrlCommand\codigo{\def\UrlFont{\ttfamily\color{edverde}}%
+  \def\UrlBreaks{\do\_\do.\do/\do(\do,}\def\UrlBigBreaks{}}
+
+% ---------------------------------------------------------------------
+% Tabelas: cabeçalho escuro, linhas alternadas
+% ---------------------------------------------------------------------
+\newcommand{\cab}{\rowcolor{edtexto}}
+\newcommand{\tc}[1]{{\color{white}\bfseries\footnotesize\MakeUppercase{#1}}}
+% cabeçalho SEM maiúsculas, para colunas com fórmulas (n, 3n², k...):
+\newcommand{\tcx}[1]{{\color{white}\bfseries\footnotesize #1}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\renewcommand{\arraystretch}{1.3}
+
+% ---------------------------------------------------------------------
+% Lista de conferência com caixinhas desenhadas
+% ---------------------------------------------------------------------
+\newcommand{\caixinha}{\tikz[baseline=-0.1em]\draw[edteal, line width=0.9pt, rounded corners=1pt]
+  (0,-0.15em) rectangle (0.8em,0.65em);}
+\newenvironment{conferencia}{\begin{itemize}[label=\caixinha, leftmargin=1.8em, itemsep=0.3em]}{\end{itemize}}
+
+% selo de dificuldade/aula, ex.: \selo{Aula 2}
+\newcommand{\selo}[1]{\tikz[baseline=(s.base)]\node[fill=edteal, text=white, font=\scriptsize\bfseries,
+  inner sep=2pt, rounded corners=1.5pt](s){\MakeUppercase{#1}};}
+
+\endinput

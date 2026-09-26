@@ -1,0 +1,18 @@
+1) INSERTION SORT PASSO A PASSO
+vetor inicial:              [5, 2, 4, 6, 1, 3]
+passada 1  chave = 2  ->  [2, 5, 4, 6, 1, 3]   comparacoes: 1   deslocamentos: 1
+passada 2  chave = 4  ->  [2, 4, 5, 6, 1, 3]   comparacoes: 2   deslocamentos: 1
+passada 3  chave = 6  ->  [2, 4, 5, 6, 1, 3]   comparacoes: 1   deslocamentos: 0
+passada 4  chave = 1  ->  [1, 2, 4, 5, 6, 3]   comparacoes: 4   deslocamentos: 4
+passada 5  chave = 3  ->  [1, 2, 3, 4, 5, 6]   comparacoes: 4   deslocamentos: 3
+total: 12 comparacoes e 9 deslocamentos
+
+2) COMPARACOES POR CENARIO
+       n     ordenado  aleatorio(*)    invertido
+      10            9            30           45
+     100           99          2607         4950
+    1000          999        252249       499500
+(*) media de varios vetores embaralhados
+
+Formulas:  ordenado = n - 1   |   aleatorio ~ n^2/4   |   invertido = n(n-1)/2
+Melhor caso: Theta(n)     Caso medio e pior caso: Theta(n^2)

@@ -1,0 +1,220 @@
+% =====================================================================
+\chapter{Contando operações}\label{cap:02}
+\naaula{06 a 08}
+
+Neste capítulo vamos transformar um trecho de código em uma função $T(n)$: o número de passos
+que ele executa para uma entrada de tamanho $n$.
+
+\section{O modelo de custo}
+
+Precisamos combinar o que conta como \enquote{um passo}. Usaremos um modelo simples, que é o
+mesmo dos slides e dos programas da aula:
+
+\begin{center}
+\begin{tabularx}{0.92\textwidth}{L L}
+\cab \tc{Custa 1 passo cada vez que executa} & \tc{Exemplo} \\
+uma atribuição & \codigo{total = 0} \\
+\rowcolor{edfundo} um teste de laço ou de \codigo{if} & \codigo{i < n}, \codigo{v[i] == valor} \\
+um incremento & \codigo{i++}, \codigo{i = i + 1} \\
+\rowcolor{edfundo} um comando simples do corpo & \codigo{total = total + v[i]} \\
+um \codigo{return} & \codigo{return total} \\
+\end{tabularx}
+\end{center}
+
+\begin{intuicao}
+Na vida real, \codigo{total = total + v[i]} envolve várias operações da máquina (ler
+\codigo{v[i]}, somar, guardar). Contar isso como 1 passo parece grosseiro, mas não faz diferença
+no que nos interessa: se cada \enquote{passo} na verdade custar 3 operações, o total só fica
+multiplicado por 3 — e, como você verá no capítulo 4, constantes multiplicativas não mudam a
+forma como o custo cresce.
+\end{intuicao}
+
+O segredo da contagem é perguntar, para cada linha: \textbf{quantas vezes ela executa?}
+Multiplicamos o custo da linha por esse número e somamos tudo.
+
+\section{Exemplo 1: somar um vetor}
+
+\begin{lstlisting}[style=c]
+int soma(const int v[], int n) {
+    int total = 0;                 /* custo 1, executa 1 vez           */
+    for (int i = 0; i < n; i++) {  /* i = 0: 1 vez | i < n: n + 1 vezes | i++: n vezes */
+        total = total + v[i];      /* custo 1, executa n vezes         */
+    }
+    return total;                  /* custo 1, executa 1 vez           */
+}
+\end{lstlisting}
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{L C C}
+\cab \tc{Linha} & \tc{Vezes} & \tc{Passos} \\
+\codigo{int total = 0;} & 1 & 1 \\
+\rowcolor{edfundo} \codigo{int i = 0} & 1 & 1 \\
+\codigo{i < n} & $n + 1$ & $n + 1$ \\
+\rowcolor{edfundo} \codigo{total = total + v[i];} & $n$ & $n$ \\
+\codigo{i++} & $n$ & $n$ \\
+\rowcolor{edfundo} \codigo{return total;} & 1 & 1 \\
+\textbf{Total} & & $\mathbf{3n + 4}$ \\
+\end{tabularx}
+\end{center}
+
+Por que o teste \codigo{i < n} executa $n + 1$ vezes, e não $n$? Porque ele é avaliado uma vez
+para cada volta do laço (dando verdadeiro) e \textbf{mais uma vez no final}, quando dá falso e o
+laço termina. Esse \enquote{mais um} é o detalhe que mais gente esquece.
+
+\begin{center}
+\begin{tabularx}{0.7\textwidth}{C C}
+\cab \tcx{$n$} & \tcx{$T(n) = 3n + 4$} \\
+10 & 34 \\
+\rowcolor{edfundo} 100 & 304 \\
+1.000 & 3.004 \\
+\end{tabularx}
+\end{center}
+
+Em Python, o mesmo cálculo pode ser escrito com \codigo{while}, deixando cada passo visível.
+A contagem é idêntica:
+
+\begin{lstlisting}
+def soma(v, n):
+    total = 0                 # 1 vez
+    i = 0                     # 1 vez
+    while i < n:              # n + 1 vezes
+        total = total + v[i]  # n vezes
+        i = i + 1             # n vezes
+    return total              # 1 vez
+\end{lstlisting}
+
+\begin{dica}
+O programa \codigo{python/contagem_operacoes.py} (e a versão em C) conta os passos de verdade,
+com um contador, e compara com a fórmula $3n + 4$. Rode e confira que os números batem.
+\end{dica}
+
+\section{Exemplo 2: busca linear}
+
+Esta é a mesma lógica do \codigo{lista_buscar()} da Aula 1: procurar um valor olhando as
+posições uma a uma.
+
+\begin{lstlisting}[style=c]
+int buscar(const int dados[], int tamanho, int valor) {
+    for (int i = 0; i < tamanho; i++) {
+        if (dados[i] == valor) {
+            return i;
+        }
+    }
+    return -1;
+}
+\end{lstlisting}
+
+Agora aparece uma novidade: o número de passos \textbf{depende dos dados}, e não só de $n$.
+
+\begin{itemize}
+  \item \textbf{Valor ausente (pior situação):} o laço dá todas as voltas. São 1 passo para
+        \codigo{i = 0}, $n + 1$ testes \codigo{i < n}, $n$ comparações no \codigo{if}, $n$
+        incrementos e 1 \codigo{return -1}: $T(n) = 3n + 3$. Para $n = 100$, 303 passos.
+  \item \textbf{Valor na posição 0 (melhor situação):} \codigo{i = 0}, um teste, uma comparação
+        e o \codigo{return}: $T(n) = 4$, qualquer que seja $n$.
+\end{itemize}
+
+Essa diferença entre \enquote{melhor} e \enquote{pior} situação é tão importante que ganha um
+capítulo inteiro, o 8.
+
+\section{Exemplo 3: laços aninhados}
+
+O que acontece com um laço dentro de outro? Este trecho imprime todos os pares $(i, j)$:
+
+\begin{lstlisting}[style=c]
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+        printf("%d %d\n", i, j);
+    }
+}
+\end{lstlisting}
+
+O laço de fora faz o de sempre: 1 inicialização, $n + 1$ testes e $n$ incrementos. O de dentro
+\textbf{roda inteiro a cada volta} do de fora, ou seja, $n$ vezes:
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{L C}
+\cab \tc{Linha} & \tc{Vezes} \\
+\codigo{int i = 0} ; \codigo{i < n} ; \codigo{i++} & $1 + (n+1) + n$ \\
+\rowcolor{edfundo} \codigo{int j = 0} (uma vez por volta de fora) & $n$ \\
+\codigo{j < n} ($n + 1$ por volta de fora) & $n(n + 1) = n^2 + n$ \\
+\rowcolor{edfundo} \codigo{j++} e \codigo{printf} ($n$ cada, por volta de fora) & $n^2 + n^2$ \\
+\textbf{Total} & $\mathbf{3n^2 + 4n + 2}$ \\
+\end{tabularx}
+\end{center}
+
+Um laço dentro de outro \textbf{multiplica}: $n$ voltas de fora $\times$ $n$ voltas de dentro dão
+$n^2$ execuções do corpo. Guarde essa ideia; ela volta no capítulo 12.
+
+\section{Exemplo 4: um laço que divide por 2}
+
+\begin{lstlisting}
+i = n
+while i > 1:
+    i = i // 2      # divisão inteira por 2
+\end{lstlisting}
+
+Com $n = 16$, \codigo{i} vale 16, 8, 4, 2 e 1: o corpo executa 4 vezes, e o teste
+\codigo{i > 1}, 5 vezes. Total: $1 + 5 + 4 = 10$ passos. Com $n = 1.024$, seriam só 10
+divisões. Esse \enquote{quantas vezes dá para dividir ao meio} tem nome — é o
+\textbf{logaritmo}, assunto da seção~3.4. O custo deste laço é $T(n) = 2\log_2 n + 2$.
+
+\section{Cuidado com o Python: uma linha não é um passo}
+
+Linguagens como Python escondem laços dentro de operações que parecem simples. No nosso modelo,
+uma linha só vale 1 passo se ela realmente fizer uma quantidade fixa de trabalho.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{4.4cm} C L}
+\cab \tc{Operação em Python} & \tc{Custo} & \tc{Por quê} \\
+\codigo{v[i]}, \codigo{len(v)} & $O(1)$ & lista contígua: acesso direto (Aula 1) \\
+\rowcolor{edfundo} \codigo{v.append(x)} & $O(1)$\,* & escreve no fim; às vezes realoca (Aula 1) \\
+\codigo{x in v} & $O(n)$ & percorre a lista procurando \codigo{x} \\
+\rowcolor{edfundo} \codigo{v.insert(0, x)} & $O(n)$ & desloca todos os elementos (Aula 1) \\
+\codigo{v.remove(x)}, \codigo{v.index(x)} & $O(n)$ & procura e depois desloca \\
+\rowcolor{edfundo} \codigo{min(v)}, \codigo{max(v)}, \codigo{sum(v)} & $O(n)$ & olham todos os elementos \\
+\codigo{v.pop()} & $O(1)$ & remove do fim, como o desempilhar (Aula 2) \\
+\end{tabularx}
+\end{center}
+
+{\small * Em média. De vez em quando, a lista precisa de mais espaço e é copiada inteira, mas
+isso é raro o suficiente para, na média, cada \codigo{append} custar um número fixo de passos.}
+
+\begin{atencao}
+\codigo{if valor in lista:} parece um único teste, mas é uma busca linear inteira! Foi por isso
+que, na Aula 3, o \codigo{pertence()} do nosso Conjunto era $O(n)$. Se essa linha estiver dentro
+de um laço de $n$ voltas, o total vira $n \times n = n^2$.
+\end{atencao}
+
+\begin{exrapido}[22]
+Conte os passos da função abaixo, que devolve o maior valor de um vetor com $n \ge 1$
+elementos. (a) Quantos passos, se o maior valor estiver na posição 0? (b) E se o vetor
+estiver em ordem crescente, fazendo \codigo{m = v[i]} executar em todas as voltas?
+
+\begin{lstlisting}[style=c]
+int maior(const int v[], int n) {
+    int m = v[0];
+    for (int i = 1; i < n; i++) {
+        if (v[i] > m) {
+            m = v[i];
+        }
+    }
+    return m;
+}
+\end{lstlisting}
+\end{exrapido}
+
+\begin{exrapido}
+Na busca linear com o valor ausente e $n = 50$: (a) quantas vezes o \codigo{if} é avaliado?
+(b) quantos passos ao todo?
+\end{exrapido}
+
+\begin{respostas}
+  \resp{2.1} Repare que o laço começa em \codigo{i = 1}: ele dá $n - 1$ voltas e o teste
+  \codigo{i < n} executa $n$ vezes. Contando: \codigo{m = v[0]} (1) + \codigo{i = 1} (1) +
+  testes ($n$) + \codigo{if} ($n - 1$) + incrementos ($n - 1$) + \codigo{return} (1).
+  (a) Sem nenhuma troca de \codigo{m}: $1 + 1 + n + (n-1) + (n-1) + 1 = 3n + 1$.
+  (b) Com \codigo{m = v[i]} executando em todas as $n - 1$ voltas: $3n + 1 + (n - 1) = 4n$.
+  Nos dois casos, o custo cresce proporcionalmente a $n$.
+  \resp{2.2} (a) 50 vezes, uma por posição. (b) $3 \cdot 50 + 3 = 153$ passos.
+\end{respostas}

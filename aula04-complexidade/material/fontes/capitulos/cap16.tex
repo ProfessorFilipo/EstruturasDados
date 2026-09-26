@@ -1,0 +1,127 @@
+% =====================================================================
+\chapter{Resumo para a prova}\label{cap:16}
+\naaula{49}
+
+Tudo o que é essencial nesta apostila, em poucas páginas. Use para revisar antes da prova
+automática do Grau 1 no LEX — e volte ao capítulo indicado sempre que algo não estiver claro.
+
+\section{As ideias centrais}
+
+\begin{enumerate}
+  \item Medimos algoritmos pelo \textbf{número de passos} em função do tamanho da entrada, $T(n)$,
+        e não em segundos (capítulos 1 e 2).
+  \item O que importa é a \textbf{forma do crescimento} para $n$ grande: ficamos com o termo
+        dominante e desprezamos constantes (capítulo 4).
+  \item $O$ é um teto, $\Omega$ é um piso e $\Theta$ é o crescimento exato (capítulos 5 a 7).
+  \item Melhor, pior e caso médio são \textbf{situações dos dados}; cada uma é descrita com as
+        notações (capítulos 8 e 9).
+  \item Trocar de computador multiplica a velocidade por uma constante; trocar de algoritmo pode
+        mudar a família (capítulo 10).
+\end{enumerate}
+
+\section{Fórmulas de bolso}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{5.6cm} L}
+\cab \tc{Fórmula} & \tc{Para que serve} \\
+$\displaystyle 1 + 2 + \dots + n = \frac{n(n+1)}{2}$ & laços triangulares, deslocamentos, Insertion Sort \\
+\rowcolor{edfundo} $\displaystyle 0 + 1 + \dots + (n-1) = \frac{n(n-1)}{2}$ & a mesma soma, começando em 0 \\
+$\log_2 n = x \Longleftrightarrow 2^x = n$ & quantas vezes dá para dividir ao meio \\
+\rowcolor{edfundo} $\log_2 n \approx 3{,}32 \cdot \log_{10} n$ & a base do log não importa em $O$ \\
+$n! = n \times (n-1) \times \dots \times 1$ & número de ordens de $n$ itens \\
+\rowcolor{edfundo} $2^n$ & número de subconjuntos de $n$ itens \\
+$\dfrac{d}{dn}\,n^p = p \cdot n^{p-1}$ & derivada: taxa de crescimento (capítulo 11) \\
+\end{tabularx}
+\end{center}
+
+\section{As notações}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{1.6cm} P{2.2cm} L P{3.2cm}}
+\cab \tc{Notação} & \tc{Ideia} & \tc{Definição} & \tc{Exemplo} \\
+$O(g)$ & teto & $f(n) \le c \cdot g(n)$ para $n \ge n_0$ & $3n + 4 = O(n)$ \\
+\rowcolor{edfundo} $\Omega(g)$ & piso & $f(n) \ge c \cdot g(n)$ para $n \ge n_0$ & $3n + 4 = \Omega(n)$ \\
+$\Theta(g)$ & exato & $c_1 g(n) \le f(n) \le c_2 g(n)$ para $n \ge n_0$ & $3n + 4 = \Theta(n)$ \\
+\end{tabularx}
+\end{center}
+
+\section{A hierarquia e as regras práticas}
+
+\begin{center}
+\colorbox{edtealclaro}{\quad $1 < \log n < \sqrt{n} < n < n \log n < n^2 < n^3 < 2^n < n!$\quad}
+\end{center}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{L C}
+\cab \tc{Padrão de código} & \tc{Custo} \\
+comandos simples & $\Theta(1)$ \\
+\rowcolor{edfundo} um laço até $n$ & $\Theta(n)$ \\
+dois laços aninhados até $n$ (ou triangulares) & $\Theta(n^2)$ \\
+\rowcolor{edfundo} laço que divide ou multiplica por 2 & $\Theta(\log n)$ \\
+blocos em sequência & soma: fica o maior \\
+\rowcolor{edfundo} laço dentro de laço & multiplica \\
+\end{tabularx}
+\end{center}
+
+\section{Casos que caem na prova}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{L C C C}
+\cab \tc{Algoritmo} & \tc{Melhor caso} & \tc{Caso médio} & \tc{Pior caso} \\
+busca linear & $\Theta(1)$ & $\Theta(n)$ & $\Theta(n)$ \\
+\rowcolor{edfundo} busca binária (vetor ordenado) & $\Theta(1)$ & $\Theta(\log n)$ & $\Theta(\log n)$ \\
+busca por saltos (vetor ordenado) & $\Theta(1)$ & $\Theta(\sqrt{n})$ & $\Theta(\sqrt{n})$ \\
+\rowcolor{edfundo} Insertion Sort & $\Theta(n)$ & $\Theta(n^2)$ & $\Theta(n^2)$ \\
+Bubble Sort com parada antecipada & $\Theta(n)$ & $\Theta(n^2)$ & $\Theta(n^2)$ \\
+\end{tabularx}
+\end{center}
+
+E os custos das estruturas das Aulas 1 a 3 estão na tabela do capítulo 13.
+
+\begin{atencao}
+As pegadinhas mais comuns: (1) achar que $O$ significa \enquote{pior caso}; (2) esquecer que
+\codigo{x in lista} é uma busca linear; (3) achar que dividir por 2 muda a família
+($\tfrac{n^2}{4}$ continua $\Theta(n^2)$); (4) comparar algoritmos só com $n$ pequeno;
+(5) esquecer o \enquote{$+1$} do teste final de um laço ao contar passos.
+\end{atencao}
+
+\section{Glossário}
+
+\begin{description}[leftmargin=0pt, itemsep=0.3em, font=\bfseries\color{edverde}]
+  \item[Algoritmo:] sequência finita de passos que resolve um problema.
+  \item[Análise assintótica:] estudo do comportamento do custo quando $n$ cresce muito.
+  \item[Caso médio:] custo esperado para dados típicos (em média).
+  \item[Custo marginal:] quanto o custo aumenta com um elemento a mais; aproximado pela derivada.
+  \item[Derivada:] taxa de crescimento de uma função num ponto; a inclinação da tangente.
+  \item[Exponencial:] função com a variável no expoente, como $2^n$; dobra a cada $+1$.
+  \item[Fatorial:] $n! = n \times (n - 1) \times \dots \times 1$; conta as ordens de $n$ itens.
+  \item[Função crescente:] função cuja saída nunca diminui quando a entrada aumenta.
+  \item[Inversão:] par de elementos fora de ordem num vetor.
+  \item[Limite:] valor do qual uma expressão se aproxima quando $n$ cresce sem parar.
+  \item[Logaritmo:] $\log_2 n$ é quantas vezes $n$ pode ser dividido ao meio até chegar a 1.
+  \item[Melhor caso:] entrada que produz o menor custo possível para um dado $n$.
+  \item[Pior caso:] entrada que produz o maior custo possível para um dado $n$; é uma garantia.
+  \item[Somatório:] soma de uma sequência de termos, escrita com $\Sigma$.
+  \item[Termo dominante:] o termo de uma soma que cresce mais rápido e decide o comportamento.
+\end{description}
+
+\section{Símbolos e como ler}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{2.4cm} P{4.2cm} L}
+\cab \tc{Símbolo} & \tc{Lê-se} & \tc{Significado} \\
+$O$ & ó grande & teto do crescimento \\
+\rowcolor{edfundo} $\Omega$ & ômega grande & piso do crescimento \\
+$\Theta$ & teta grande & crescimento exato \\
+\rowcolor{edfundo} $\Sigma$ & sigma, somatório & soma de vários termos \\
+$n_0$ & ene zero & a partir de onde a desigualdade vale \\
+\rowcolor{edfundo} $\le$, $\ge$ & menor ou igual, maior ou igual & comparação \\
+$n \to \infty$ & ene tende ao infinito & $n$ crescendo sem parar \\
+\rowcolor{edfundo} $\log_2 n$ & logaritmo de ene na base 2 & divisões ao meio até 1 \\
+$\sqrt{n}$ & raiz quadrada de ene & lado de um quadrado com $n$ casas \\
+\rowcolor{edfundo} $n!$ & ene fatorial & produto de 1 até $n$ \\
+$T'(n)$ & tê linha de ene & derivada de $T$ \\
+\rowcolor{edfundo} $\lfloor x \rfloor$ & piso de $x$ & parte inteira de $x$ (arredonda para baixo) \\
+$\Longleftrightarrow$ & se, e somente se & as duas afirmações são equivalentes \\
+\end{tabularx}
+\end{center}

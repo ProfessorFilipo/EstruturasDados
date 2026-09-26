@@ -1,0 +1,142 @@
+% =====================================================================
+\chapter{Melhor, pior e caso médio}\label{cap:08}
+\naaula{28}
+
+No capítulo 2, a busca linear custou 4 passos quando o valor estava na primeira posição e $3n + 3$
+quando não estava na lista. O mesmo algoritmo, com o mesmo $n$, tem custos muito diferentes:
+tudo depende dos \textbf{dados}. Este capítulo organiza essa ideia.
+
+\section{Três perguntas diferentes}
+
+Para uma entrada de tamanho $n$, podemos perguntar:
+
+\begin{itemize}
+  \item \textbf{Melhor caso:} qual é o \emph{menor} custo possível, escolhendo os dados mais
+        favoráveis?
+  \item \textbf{Pior caso:} qual é o \emph{maior} custo possível, com os dados mais desfavoráveis?
+  \item \textbf{Caso médio:} qual é o custo \emph{esperado}, em média, para dados típicos?
+\end{itemize}
+
+Cada resposta é uma função de $n$ diferente. Vamos calculá-las para a busca linear, contando só
+as comparações \codigo{dados[i] == valor}.
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[scale=0.62, every node/.style={font=\small}]
+  \foreach \lin/\nome/\alvo/\cor in {0/melhor caso/1/edteal, 1/caso médio/5/edlaranja, 2/pior caso/9/edverde} {
+    \node[anchor=east, font=\small\bfseries] at (-0.4, -\lin*1.8+0.5) {\nome};
+    \foreach \i in {1,...,9} {
+      \pgfmathsetmacro{\preench}{\i <= \alvo ? 1 : 0}
+      \ifdim\preench pt=1pt
+        \draw[fill=\cor!25, draw=\cor, line width=0.8pt] (\i-1, -\lin*1.8) rectangle ++(1,1);
+      \else
+        \draw[fill=white, draw=edcinzaclaro, line width=0.8pt] (\i-1, -\lin*1.8) rectangle ++(1,1);
+      \fi
+    }
+    \draw[-{Latex}, line width=1pt, \cor] (\alvo-0.5, -\lin*1.8+1.7) -- (\alvo-0.5, -\lin*1.8+1.05);
+  }
+  \node[anchor=west] at (9.4, 0.5) {1 comparação};
+  \node[anchor=west] at (9.4, -1.3) {em média, $(n+1)/2$};
+  \node[anchor=west] at (9.4, -3.1) {$n$ comparações};
+\end{tikzpicture}
+\caption{Busca linear num vetor de 9 posições: as células coloridas são as comparadas até achar o
+valor (seta).}
+\end{figure}
+
+\section{A busca linear, caso a caso}
+
+\textbf{Melhor caso:} o valor está na posição 0. Uma comparação e pronto: custo $\Theta(1)$.
+
+\textbf{Pior caso:} o valor está na última posição ou não está na lista. São $n$ comparações:
+custo $\Theta(n)$.
+
+\textbf{Caso médio:} suponha que o valor está na lista e que qualquer posição é igualmente
+provável. Se ele está na posição 1, fazemos 1 comparação; na posição 2, fazemos 2; \dots; na
+posição $n$, fazemos $n$. A média é a soma dividida por $n$ — e a soma é a de Gauss:
+\[
+\text{média} \;=\; \frac{1 + 2 + \dots + n}{n} \;=\; \frac{n(n+1)/2}{n} \;=\; \frac{n+1}{2}.
+\]
+Em média, olhamos cerca de metade da lista. Mas \enquote{metade de $n$} ainda cresce como $n$:
+o caso médio também é $\Theta(n)$.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{L C C L}
+\cab \tc{Caso} & \tc{Comparações} & \tc{Crescimento} & \tc{Quando acontece} \\
+Melhor & 1 & $\Theta(1)$ & valor na primeira posição \\
+\rowcolor{edfundo} Médio & $\dfrac{n+1}{2}$ & $\Theta(n)$ & valor numa posição qualquer \\
+Pior & $n$ & $\Theta(n)$ & valor no fim ou ausente \\
+\end{tabularx}
+\end{center}
+
+\section{Qual caso importa mais?}
+
+\begin{itemize}
+  \item O \textbf{pior caso} é uma \emph{garantia}: o algoritmo nunca será mais lento que isso.
+        É o mais usado, principalmente em sistemas em que atrasar não é aceitável.
+  \item O \textbf{caso médio} descreve o desempenho típico, mas exige supor como os dados
+        costumam ser — e nem sempre sabemos.
+  \item O \textbf{melhor caso} raramente serve para escolher um algoritmo (é fácil ter sorte), mas
+        mostra o mínimo que o algoritmo faz e, às vezes, revela situações práticas importantes,
+        como dados quase ordenados (capítulo 9).
+\end{itemize}
+
+\section{Mais dois exemplos das aulas anteriores}
+
+\textbf{O \codigo{conjunto_inserir()} da Aula 3} chama \codigo{pertence()} antes de inserir, para
+não duplicar. Num Conjunto com $n$ elementos:
+\begin{itemize}
+  \item melhor caso: o valor já é o primeiro elemento; \codigo{pertence()} acha na primeira
+        comparação e a inserção é recusada: $\Theta(1)$;
+  \item pior caso: o valor é novo; \codigo{pertence()} compara com todos os $n$ e depois
+        insere no fim: $\Theta(n)$.
+\end{itemize}
+E se inserirmos $n$ valores \emph{distintos}, um a um, num Conjunto vazio? A primeira inserção
+compara com 0 elementos, a segunda com 1, \dots, a última com $n - 1$: de novo a soma de Gauss,
+$\dfrac{n(n-1)}{2}$ comparações, ou seja, $\Theta(n^2)$. É por isso que o \codigo{set()} do
+Python usa outra estrutura (as tabelas de dispersão, assunto de um curso mais adiante).
+
+\textbf{A função \codigo{maior()} do exercício 2.1} fez $3n + 1$ passos no melhor caso e $4n$ no
+pior. Os números mudam, mas os dois casos são $\Theta(n)$. Nem sempre o caso muda a
+\emph{família} do crescimento — mas, às vezes, muda, como você verá no capítulo 9.
+
+\section{Casos e notações não são a mesma coisa}
+
+\begin{atencao}
+É muito comum confundir \enquote{$O$ = pior caso} e \enquote{$\Omega$ = melhor caso}. Não é isso!
+\begin{itemize}
+  \item \textbf{Melhor, pior e médio} são \emph{situações dos dados}. Cada uma gera uma função de $n$.
+  \item \textbf{$O$, $\Omega$ e $\Theta$} são \emph{formas de descrever o crescimento de uma função}.
+\end{itemize}
+Por isso podemos dizer, por exemplo, \enquote{o pior caso da busca linear é $\Theta(n)$} e
+\enquote{o melhor caso é $\Theta(1)$}. O capítulo 9 mostra essa distinção com o Insertion Sort,
+em que o melhor e o pior caso pertencem a famílias diferentes.
+\end{atencao}
+
+\begin{exrapido}[18]
+Considere a função abaixo, que verifica se uma lista tem algum valor repetido.
+(a) Qual é o melhor caso e quantas comparações ele faz? (b) Qual é o pior caso e quantas
+comparações ele faz? (c) Escreva os dois com a notação $\Theta$.
+
+\begin{lstlisting}
+def tem_repetido(v):
+    for i in range(len(v)):
+        for j in range(i + 1, len(v)):
+            if v[i] == v[j]:
+                return True
+    return False
+\end{lstlisting}
+\end{exrapido}
+
+\begin{exrapido}
+Numa busca linear num vetor de 9 elementos, com o valor presente e todas as posições igualmente
+prováveis, quantas comparações são feitas em média?
+\end{exrapido}
+
+\begin{respostas}
+  \resp{8.1} (a) Melhor caso: \codigo{v[0] == v[1]}. A primeira comparação já encontra a
+  repetição: 1 comparação. (b) Pior caso: não há nenhum valor repetido, e todas as duplas são
+  comparadas. Para \codigo{i = 0}, são $n - 1$ comparações; para \codigo{i = 1}, $n - 2$; \dots;
+  no total, $(n-1) + (n-2) + \dots + 1 + 0 = \dfrac{n(n-1)}{2}$. (c) Melhor caso $\Theta(1)$;
+  pior caso $\Theta(n^2)$.
+  \resp{8.2} $\dfrac{9 + 1}{2} = 5$ comparações.
+\end{respostas}

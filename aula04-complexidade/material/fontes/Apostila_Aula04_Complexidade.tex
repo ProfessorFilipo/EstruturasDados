@@ -1,0 +1,176 @@
+% =====================================================================
+% Apostila — Aula 4 — Complexidade de Algoritmos
+% Estruturas de Dados — UniLasalle EAD — Prof. Filipo Novo Mór — 2026
+% Compilar com XeLaTeX (no Overleaf: Menu > Compiler > XeLaTeX), duas vezes.
+% =====================================================================
+\documentclass[11pt]{report}
+\usepackage{estilo-ed}
+\hypersetup{pdftitle={Apostila - Aula 4 - Complexidade de Algoritmos},
+  pdfauthor={Prof. Filipo Novo Mór}, pdfsubject={Estruturas de Dados - UniLasalle EAD}}
+
+% ---------------- cabeçalho com o capítulo atual ----------------
+\renewcommand{\chaptermark}[1]{\markboth{\ifnum\value{chapter}>0 \thechapter.\ \fi#1}{}}
+\renewcommand{\edcabecalho}{APOSTILA DA AULA 4 \textbar\ \MakeUppercase{\leftmark}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[L]{\footnotesize\color{edcinza}Prof. Filipo Novo Mór - filipomor.com - 2026}%
+  \fancyfoot[R]{\footnotesize\color{edcinza}Página \thepage\ de \pageref*{LastPage}}}
+
+% ---------------- abertura de capítulo: número pixelado ----------------
+\titleformat{\chapter}[display]
+  {\normalfont\color{edtexto}}
+  {\includegraphics[height=1.25cm]{figuras/cap\thechapter.png}}
+  {0.7em}
+  {\fontsize{26}{30}\selectfont\bfseries}
+  [\vspace{-0.3em}{\color{edteal}\rule{\textwidth}{1.4pt}}]
+\titleformat{name=\chapter, numberless}[display]
+  {\normalfont\color{edtexto}}{}{0pt}
+  {\fontsize{26}{30}\selectfont\bfseries}
+  [\vspace{-0.3em}{\color{edteal}\rule{\textwidth}{1.4pt}}]
+\titlespacing*{\chapter}{0pt}{-1.2em}{1.4em}
+% "Na aula: slides ..." logo abaixo do título do capítulo
+\newcommand{\naaula}[1]{{\small\color{edcinza}\textbf{NA AULA:} slides #1 \textbar\
+  \textbf{NO REPOSITÓRIO:} \texttt{aula04-complexidade/}}\par\vspace{0.6em}}
+
+% ---------------- caixas próprias da apostila ----------------
+\newenvironment{intuicao}{\begin{caixa}[Intuição]{edteal}{edtealclaro}}{\end{caixa}}
+\newenvironment{conexao}{\begin{caixa}[Conexão com as aulas anteriores]{edverde}{edfundo2}}{\end{caixa}}
+\newenvironment{aprofunde}{\begin{caixa}[Aprofunde (opcional)]{edcinza}{edfundo}}{\end{caixa}}
+\newcounter{exrapido}[chapter]
+\renewcommand{\theexrapido}{\thechapter.\arabic{exrapido}}
+% [n] = linhas que precisam caber na página (use um número maior se houver código)
+\newenvironment{exrapido}[1][6]{\needspace{#1\baselineskip}\refstepcounter{exrapido}%
+  \begin{caixa}[Exercício rápido \theexrapido]{edlaranja}{edlaranjaclaro}}{\end{caixa}}
+% respostas no fim de cada capítulo
+\newenvironment{respostas}{\section*{Respostas dos exercícios rápidos}%
+  \begin{description}[leftmargin=0pt, itemsep=0.5em, font=\bfseries\color{edlaranja}]}{\end{description}}
+\newcommand{\resp}[1]{\item[#1.]}
+
+% ---------------- exercícios resolvidos (capítulo 15) ----------------
+\newenvironment{resolucao}{\begin{caixa}[Resolução]{edverde}{edfundo2}}{\end{caixa}}
+\newcommand{\exercicio}[2]{\needspace{8\baselineskip}\subsection*{\color{edverde}Exercício #1 \hspace{0.4em}{\color{edlaranja}\small #2}}}
+
+% ---------------- linha de vetor para o passo a passo do Insertion Sort ----------------
+% \linhaIns{y}{valores}{tamanho da parte ordenada}{posição da chave (0 = nenhuma)}{rótulo}
+\newcommand{\linhaIns}[5]{%
+  \foreach \v [count=\i] in {#2} {%
+    \ifnum\i=#4 \def\corF{edlaranjaclaro}\def\corB{edlaranja}%
+    \else\ifnum\i>#3 \def\corF{white}\def\corB{edcinzaclaro}%
+    \else\def\corF{edtealclaro}\def\corB{edteal}\fi\fi
+    \draw[fill=\corF, draw=\corB, line width=0.9pt] (\i-1, #1) rectangle ++(0.9,0.9);
+    \node[font=\bfseries] at (\i-0.55, #1+0.45) {\v};
+  }%
+  \node[anchor=west, font=\small] at (6.3, #1+0.45) {#5};
+}
+
+% ---------------- sumário ----------------
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\renewcommand{\contentsname}{Sumário}
+
+\begin{document}
+\pagenumbering{alph}
+
+% =============================== CAPA ===============================
+\begin{titlepage}
+  \thispagestyle{empty}
+  \vspace*{0.4cm}
+  {\small\bfseries\color{edteal}ESTRUTURAS DE DADOS · UNILASALLE EAD · GRAU 1}\par\vspace{1.4cm}
+  \includegraphics[height=0.8cm]{figuras/titulo_apostila.png}\par\vspace{0.5cm}
+  \includegraphics[height=1.55cm]{figuras/titulo_complexidade.png}\par\vspace{0.25cm}
+  \includegraphics[height=1.55cm]{figuras/titulo_de_algoritmos.png}\par\vspace{0.9cm}
+  {\Large\color{edverde}Contagem de operações e as notações $O$, $\Omega$ e $\Theta$}\par\vspace{0.3cm}
+  {\large\color{edcinza}com exemplos, exercícios resolvidos e a atividade prática Campo Minado}\par
+  \vspace{1.2cm}
+  {\color{edverde}\rule{\textwidth}{1.4pt}}\par\vspace{1.0cm}
+  \begin{minipage}[c]{0.3\textwidth}
+    \includegraphics[width=4.2cm]{figuras/foto_professor.png}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.64\textwidth}
+    {\Large\bfseries Prof. Filipo Novo Mór}\par\vspace{0.3em}
+    {\color{edcinza}filipomor.com}\par\vspace{1.2em}
+    {\small Material de apoio da Aula 4 (Desempenho de Algoritmos), para estudar depois da
+    aula ao vivo ou junto com a gravação. Os códigos citados estão no repositório
+    \url{https://github.com/ProfessorFilipo/EstruturasDados}, na pasta
+    \texttt{aula04-complexidade}.}
+  \end{minipage}
+  \vfill
+  {\small\color{edcinza}2026}
+\end{titlepage}
+
+\pagenumbering{arabic}
+\tableofcontents
+
+% ======================= COMO USAR ESTA APOSTILA =======================
+\chapter*{Como usar esta apostila}\label{cap:como}
+\addcontentsline{toc}{chapter}{Como usar esta apostila}
+\markboth{Como usar esta apostila}{}
+
+Esta apostila acompanha a Aula 4 de Estruturas de Dados, a última do Grau 1. Na aula ao vivo, o
+tempo é curto; aqui você encontra cada ideia com mais calma, com mais exemplos e com os
+cálculos feitos passo a passo. Ela foi escrita pensando em quem \textbf{não teve uma base forte
+de matemática}: tudo o que é preciso — funções, potências, logaritmos, somatórios e até uma
+pitada de Cálculo — é explicado do zero, sempre ligado ao que você já programou nas Aulas 1 a 3.
+
+\section*{Com os slides e a gravação}
+
+A apostila segue a mesma ordem da aula. Logo abaixo do título de cada capítulo aparece a
+indicação \textbf{NA AULA: slides \dots}, com os slides que tratam daquele assunto. E cada slide
+da aula traz, no canto, a página da apostila que aprofunda o tema. Se estiver assistindo à
+gravação, pause o vídeo quando quiser e leia o trecho correspondente.
+
+\section*{As caixas que você vai encontrar}
+
+\begin{intuicao}
+Uma explicação informal, com analogias, antes da definição exata. Leia com calma: é aqui que a
+ideia \enquote{cai a ficha}.
+\end{intuicao}
+
+\begin{conexao}
+Uma ligação com o que você já estudou nas Aulas 1 a 3: listas, pilhas, filas e conjuntos.
+\end{conexao}
+
+\begin{atencao}
+Um erro comum, um detalhe que costuma confundir ou um ponto que aparece muito em provas.
+\end{atencao}
+
+\begin{caixa}[Exercício rápido]{edlaranja}{edlaranjaclaro}
+Um exercício curto para você fazer na hora, com lápis e papel. As respostas estão no fim de
+cada capítulo — tente antes de olhar!
+\end{caixa}
+
+\begin{aprofunde}
+Um assunto um pouco mais avançado. Pode pular na primeira leitura sem prejuízo.
+\end{aprofunde}
+
+\section*{Como estudar}
+
+\begin{enumerate}
+  \item Leia um capítulo por vez, com lápis e papel ao lado. Refaça as contas dos exemplos.
+  \item Faça cada \textbf{exercício rápido} antes de ver a resposta.
+  \item Rode os programas citados (pasta \texttt{aula04-complexidade} do repositório). Eles
+        funcionam na IDE online usada nas aulas.
+  \item No fim, resolva a lista de exercícios do capítulo 15 e use o resumo do capítulo 16 para
+        revisar antes da prova do Grau 1.
+  \item Para praticar tudo junto, faça a atividade Campo Minado (capítulo 14 e enunciado próprio).
+\end{enumerate}
+
+% ============================== CAPÍTULOS ==============================
+\input{capitulos/cap01}
+\input{capitulos/cap02}
+\input{capitulos/cap03}
+\input{capitulos/cap04}
+\input{capitulos/cap05}
+\input{capitulos/cap06}
+\input{capitulos/cap07}
+\input{capitulos/cap08}
+\IfFileExists{capitulos/cap09.tex}{\input{capitulos/cap09}}{}
+\IfFileExists{capitulos/cap10.tex}{\input{capitulos/cap10}}{}
+\IfFileExists{capitulos/cap11.tex}{\input{capitulos/cap11}}{}
+\IfFileExists{capitulos/cap12.tex}{\input{capitulos/cap12}}{}
+\IfFileExists{capitulos/cap13.tex}{\input{capitulos/cap13}}{}
+\IfFileExists{capitulos/cap14.tex}{\input{capitulos/cap14}}{}
+\IfFileExists{capitulos/cap15.tex}{\input{capitulos/cap15}}{}
+\IfFileExists{capitulos/cap16.tex}{\input{capitulos/cap16}}{}
+\IfFileExists{capitulos/apendice.tex}{\input{capitulos/apendice}}{}
+
+\end{document}

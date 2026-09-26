@@ -1,0 +1,121 @@
+% =====================================================================
+\chapter{Regras práticas para analisar código}\label{cap:12}
+\naaula{46}
+
+Contar cada passo, como no capítulo 2, é ótimo para aprender — mas trabalhoso. Na prática,
+reconhecemos alguns \textbf{padrões} e chegamos direto à notação $O$ (ou $\Theta$).
+
+\section{Os padrões}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{4.3cm} P{5.2cm} L}
+\cab \tc{Padrão} & \tc{Exemplo} & \tc{Custo} \\
+comandos simples, sem laço & \codigo{x = v[0] + 1} & $\Theta(1)$ \\
+\rowcolor{edfundo} um laço de $n$ voltas com corpo $\Theta(1)$ & \codigo{for i in range(n): soma += v[i]} & $\Theta(n)$ \\
+laço dentro de laço, $n$ voltas cada & \codigo{for i ... for j ...} & $\Theta(n^2)$ \\
+\rowcolor{edfundo} laço \enquote{triangular}: o de dentro vai até \codigo{i} & \codigo{for i in range(n): for j in range(i)} & $\Theta(n^2)$ (Gauss) \\
+laço que divide (ou multiplica) por 2 & \codigo{while i > 1: i //= 2} & $\Theta(\log n)$ \\
+\rowcolor{edfundo} blocos em sequência & bloco $A$ e depois bloco $B$ & soma: fica o maior \\
+\codigo{if}/\codigo{else} & ramo $A$ ou ramo $B$ & o pior dos ramos (para $O$) \\
+\rowcolor{edfundo} chamada de função dentro de laço & $n$ chamadas de algo $\Theta(m)$ & $\Theta(n \cdot m)$ \\
+\end{tabularx}
+\end{center}
+
+\begin{intuicao}
+Duas perguntas resolvem quase tudo: \textbf{quantas vezes cada laço roda?} e \textbf{o que está
+dentro de quê?} Laços um \emph{depois} do outro somam; laços um \emph{dentro} do outro multiplicam.
+\end{intuicao}
+
+\section{Exemplos resolvidos}
+
+\needspace{10\baselineskip}\textbf{Exemplo 1 — laços em sequência e aninhados.}
+
+\begin{lstlisting}
+for i in range(n):          # bloco A: n * n voltas
+    for j in range(n):
+        print(i, j)
+for k in range(n):          # bloco B: n voltas
+    print(k)
+\end{lstlisting}
+
+O bloco A custa $n^2$; o B, $n$. Em sequência, somam: $n^2 + n$. Fica o termo dominante:
+$\Theta(n^2)$.
+
+\needspace{10\baselineskip}\textbf{Exemplo 2 — dividindo ao meio.}
+
+\begin{lstlisting}
+i = n
+while i > 1:
+    i = i // 2
+\end{lstlisting}
+
+A cada volta, \codigo{i} cai pela metade: o laço roda cerca de $\log_2 n$ vezes. Custo:
+$\Theta(\log n)$.
+
+\needspace{10\baselineskip}\textbf{Exemplo 3 — o laço triangular.}
+
+\begin{lstlisting}
+for i in range(n):
+    for j in range(i):      # 0, 1, 2, ..., n-1 voltas
+        print(i, j)
+\end{lstlisting}
+
+O laço de dentro dá $0 + 1 + 2 + \dots + (n - 1) = \dfrac{n(n-1)}{2}$ voltas no total (Gauss).
+Custo: $\Theta(n^2)$ — a metade de um quadrado continua quadrática.
+
+\needspace{10\baselineskip}\textbf{Exemplo 4 — um laço logarítmico dentro de um linear.}
+
+\begin{lstlisting}
+for i in range(n):          # n voltas
+    j = 1
+    while j < n:            # cerca de log2(n) voltas
+        j = j * 2
+\end{lstlisting}
+
+Para cada uma das $n$ voltas de fora, o de dentro roda cerca de $\log_2 n$ vezes. Aninhados,
+multiplicam: $\Theta(n \log n)$.
+
+\needspace{10\baselineskip}\textbf{Exemplo 5 — a função escondida.}
+
+\begin{lstlisting}
+def comuns(a, b):           # a tem n elementos, b tem m
+    resultado = []
+    for x in a:             # n voltas
+        if x in b:          # "in" percorre b: O(m)
+            resultado.append(x)
+    return resultado
+\end{lstlisting}
+
+O \codigo{x in b} parece um teste simples, mas é uma busca linear em \codigo{b}
+(capítulo 2). São $n$ buscas de custo $m$: $O(n \cdot m)$. É a interseção ingênua da Aula 3.
+
+\begin{atencao}
+Em Python, desconfie de toda linha que opera sobre uma lista inteira: \codigo{in},
+\codigo{insert(0, x)}, \codigo{remove(x)}, \codigo{index(x)}, \codigo{min}, \codigo{max},
+\codigo{sum}, \codigo{sorted}. Cada uma esconde um laço.
+\end{atencao}
+
+\begin{exrapido}[14]
+Dê o custo de cada trecho, em notação $O$.
+
+\begin{lstlisting}
+# (a)
+for i in range(n):
+    for j in range(10):
+        print(i, j)
+# (b)
+i = 1
+while i < n:
+    i = i * 3
+# (c)
+for i in range(n):
+    lista.insert(0, i)      # lista contígua do Python
+\end{lstlisting}
+\end{exrapido}
+
+\begin{respostas}
+  \resp{12.1} (a) O laço de dentro tem sempre 10 voltas (uma constante): $10n$, ou seja, $O(n)$.
+  (b) \codigo{i} é multiplicado por 3 a cada volta: $\log_3 n$ voltas, ou seja, $O(\log n)$ (a
+  base não importa). (c) Cada \codigo{insert(0, i)} desloca todos os elementos já inseridos:
+  $0 + 1 + \dots + (n - 1)$ deslocamentos, ou seja, $O(n^2)$.
+\end{respostas}

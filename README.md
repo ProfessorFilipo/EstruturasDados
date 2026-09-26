@@ -10,6 +10,7 @@ um com seu próprio código em C e Python, exercícios guiados e gabarito.
 | 1 | Estruturas Lineares (Parte 1) — contíguas x encadeadas, TAD Lista | [`aula01-estruturas-lineares/`](aula01-estruturas-lineares/) |
 | 2 | Pilhas e Filas | [`aula02-pilhas-filas/`](aula02-pilhas-filas/) |
 | 3 | Estruturas Lineares (Consolidação) + Conjuntos | [`aula03-conjuntos/`](aula03-conjuntos/) |
+| 4 | Complexidade de Algoritmos — contagem de operações, O, Ω e Θ, Insertion Sort + atividade Campo Minado | [`aula04-complexidade/`](aula04-complexidade/) |
 
 Cada pasta de aula tem sua própria estrutura (`c/`, `python/`,
 `exercicios/`, `solucoes/`) e seu próprio README com instruções de uso —

@@ -1,0 +1,306 @@
+% =====================================================================
+\chapter{Lista de exercícios resolvidos}\label{cap:15}
+\naaula{todos}
+
+Resolva cada exercício antes de olhar a resolução. As estrelas indicam a dificuldade:
+{\color{edlaranja}\estrela{}} direto, {\color{edlaranja}\estrela{}\estrela{}} médio, {\color{edlaranja}\estrela{}\estrela{}\estrela{}} desafiador.
+O bloco D traz questões objetivas no estilo da prova automática do Grau 1 no LEX.
+
+% =====================================================================
+\section{Bloco A — contagem e matemática}
+
+\exercicio{A1}{\estrela{}}
+Conte os passos do trecho abaixo e escreva $T(n)$. Quanto vale $T(100)$?
+\begin{lstlisting}[style=c]
+int s = 0;
+for (int i = 0; i < n; i++) {
+    s = s + i * i;
+}
+\end{lstlisting}
+\begin{resolucao}
+\codigo{s = 0}: 1; \codigo{i = 0}: 1; testes: $n + 1$; corpo: $n$; incrementos: $n$. Total:
+$T(n) = 3n + 3$. Para $n = 100$: $T(100) = 303$.
+\end{resolucao}
+
+\exercicio{A2}{\estrela{}}
+Quantas voltas dá o laço \codigo{for i in range(0, n, 2)} (de 2 em 2)? Qual é o seu custo?
+\begin{resolucao}
+Ele passa por $0, 2, 4, \dots$: cerca de $n/2$ voltas. Metade de $n$ continua crescendo como $n$
+(a constante $1/2$ é desprezada): $\Theta(n)$.
+\end{resolucao}
+
+\exercicio{A3}{\estrela{}}
+Calcule: (a) $\log_2 512$; (b) $\log_2 2^{20}$; (c) $\log_2 1$; (d) entre quais inteiros está $\log_2 3.000$?
+\begin{resolucao}
+(a) 9, pois $2^9 = 512$. (b) 20 (o expoente \enquote{desce}). (c) 0, pois $2^0 = 1$.
+(d) Entre 11 e 12, pois $2^{11} = 2.048 < 3.000 < 4.096 = 2^{12}$.
+\end{resolucao}
+
+\exercicio{A4}{\estrela{}\estrela{}}
+Calcule (a) $\displaystyle\sum_{i=1}^{50} i$ \quad e \quad (b) $\displaystyle\sum_{i=1}^{n} (2i + 1)$.
+\begin{resolucao}
+(a) $\dfrac{50 \cdot 51}{2} = 1.275$. (b) Separando: $2 \sum i + \sum 1 = 2 \cdot \dfrac{n(n+1)}{2} + n
+= n^2 + n + n = n^2 + 2n$. Confira com $n = 2$: $3 + 5 = 8 = 4 + 4$.
+\end{resolucao}
+
+\exercicio{A5}{\estrela{}\estrela{}}
+Uma lista contígua tem $n$ elementos. Removemos sempre o \textbf{primeiro} elemento, até a lista
+ficar vazia. Quantos deslocamentos acontecem ao todo? Qual é o custo?
+\begin{resolucao}
+Remover o primeiro de uma lista com $t$ elementos desloca os $t - 1$ restantes. Somando para
+$t = n, n-1, \dots, 1$: $(n-1) + (n-2) + \dots + 0 = \dfrac{n(n-1)}{2}$ deslocamentos: $\Theta(n^2)$.
+Com uma Fila encadeada, cada remoção seria $\Theta(1)$ e o total, $\Theta(n)$.
+\end{resolucao}
+
+\exercicio{A6}{\estrela{}\estrela{}}
+A função \codigo{tem_repetido()} do capítulo 8 recebe uma lista de 10 elementos sem nenhum
+valor repetido. Quantas comparações ela faz?
+\begin{resolucao}
+É o pior caso: todas as duplas são comparadas. $9 + 8 + \dots + 1 + 0 = \dfrac{10 \cdot 9}{2} = 45$.
+\end{resolucao}
+
+% =====================================================================
+\section{Bloco B — notações}
+
+\exercicio{B1}{\estrela{}}
+Mostre que $5n + 3 = O(n)$.
+\begin{resolucao}
+Com $c = 6$: $5n + 3 \le 6n \Longleftrightarrow n \ge 3$. Então $c = 6$, $n_0 = 3$. (Pela técnica
+de somar coeficientes: $5n + 3 \le 8n$ para $n \ge 1$, com $c = 8$, $n_0 = 1$.)
+\end{resolucao}
+
+\exercicio{B2}{\estrela{}\estrela{}}
+Mostre que $n^3 + 2n^2 = \Theta(n^3)$.
+\begin{resolucao}
+Piso: $n^3 + 2n^2 \ge n^3$ sempre. Teto: para $n \ge 1$, $2n^2 \le 2n^3$, então
+$n^3 + 2n^2 \le 3n^3$. Logo, $c_1 = 1$, $c_2 = 3$ e $n_0 = 1$.
+\end{resolucao}
+
+\exercicio{B3}{\estrela{}\estrela{}}
+Verdadeiro ou falso? (a) $n = O(n^2)$; (b) $n^2 = O(n)$; (c) $2^{n+1} = O(2^n)$;
+(d) $3^n = O(2^n)$; (e) $\log_2 n = O(\log_{10} n)$; (f) $n \log n = O(n^2)$.
+\begin{resolucao}
+(a) V (teto folgado, mas verdadeiro). (b) F (seção 5.5). (c) V: $2^{n+1} = 2 \cdot 2^n$, basta
+$c = 2$. (d) F: $3^n / 2^n = 1{,}5^n$ cresce sem limite; nenhuma constante segura. (e) V: as bases
+só diferem por uma constante ($\approx 3{,}32$). (f) V: $\log n \le n$, então $n \log n \le n \cdot n$.
+\end{resolucao}
+
+\exercicio{B4}{\estrela{}\estrela{}\estrela{}}
+Mostre que $n^2 - 10n = \Omega(n^2)$.
+\begin{resolucao}
+Tentando $c = \tfrac{1}{2}$: $n^2 - 10n \ge \tfrac{n^2}{2} \Longleftrightarrow \tfrac{n^2}{2} \ge 10n
+\Longleftrightarrow n \ge 20$. Então $c = \tfrac{1}{2}$ e $n_0 = 20$.
+\end{resolucao}
+
+\exercicio{B5}{\estrela{}}
+Dê o $\Theta$ de cada função: (a) $7n^2 + n\log n$; (b) $n + \sqrt{n}$; (c) $2^n + n^{100}$;
+(d) $(n+1)(n-1)$; (e) $1.000\log n + 5$.
+\begin{resolucao}
+(a) $\Theta(n^2)$. (b) $\Theta(n)$. (c) $\Theta(2^n)$ — a exponencial vence qualquer potência,
+mesmo $n^{100}$, para $n$ grande o bastante. (d) $n^2 - 1$: $\Theta(n^2)$. (e) $\Theta(\log n)$.
+\end{resolucao}
+
+\exercicio{B6}{\estrela{}}
+Por que não se escreve $O(2n)$ nem $O(n^2 + n)$?
+\begin{resolucao}
+Porque $O$ descreve a forma do crescimento: constantes multiplicativas e termos menores não mudam
+essa forma. $O(2n)$ e $O(n)$ são o mesmo conjunto de funções; por convenção, usa-se a forma mais
+simples: $O(n)$ e $O(n^2)$.
+\end{resolucao}
+
+% =====================================================================
+\section{Bloco C — casos e algoritmos}
+
+\exercicio{C1}{\estrela{}}
+Aplique o Insertion Sort a $[3, 1, 2]$, contando comparações e deslocamentos.
+\begin{resolucao}
+Passada 1 (chave 1): compara com 3 (desloca) e \codigo{j} chega a $-1$: 1 comparação, 1
+deslocamento: $[1, 3, 2]$. Passada 2 (chave 2): compara com 3 (desloca) e com 1 (para):
+2 comparações, 1 deslocamento: $[1, 2, 3]$. Total: 3 comparações e 2 deslocamentos (e 2
+inversões no vetor original: os pares (3,1) e (3,2)).
+\end{resolucao}
+
+\exercicio{C2}{\estrela{}}
+Numa busca linear em 99 elementos, com o valor presente e qualquer posição igualmente provável,
+quantas comparações são feitas em média?
+\begin{resolucao}
+$\dfrac{n + 1}{2} = \dfrac{100}{2} = 50$.
+\end{resolucao}
+
+\exercicio{C3}{\estrela{}\estrela{}}
+Num vetor \textbf{ordenado}, uma busca linear pode parar assim que encontrar um elemento maior
+que o valor procurado (ele não pode estar mais à frente). Qual é o melhor e o pior caso?
+\begin{resolucao}
+Melhor caso: o primeiro elemento já é maior ou igual ao valor: 1 comparação, $\Theta(1)$. Pior
+caso: o valor é maior que todos (ou é o último): $n$ comparações, $\Theta(n)$. A parada antecipada
+melhora o caso médio quando o valor não está, mas não muda a família do pior caso.
+\end{resolucao}
+
+\exercicio{C4}{\estrela{}\estrela{}}
+Na busca por saltos com $n = 2.500$, qual é o melhor salto e quantas comparações são feitas no
+pior caso?
+\begin{resolucao}
+$m = \sqrt{2.500} = 50$; $T = 2.500/50 + 50 = 100$ comparações (contra 2.500 da busca linear).
+\end{resolucao}
+
+\exercicio{C5}{\estrela{}\estrela{}\estrela{}}
+O \textbf{Bubble Sort com parada antecipada} percorre o vetor trocando vizinhos fora de ordem e
+para quando uma passada inteira não faz nenhuma troca. Qual é o melhor e o pior caso, em
+comparações?
+\begin{lstlisting}
+def bubble_sort(v):
+    n = len(v)
+    for fim in range(n - 1, 0, -1):
+        trocou = False
+        for i in range(fim):
+            if v[i] > v[i + 1]:
+                v[i], v[i + 1] = v[i + 1], v[i]
+                trocou = True
+        if not trocou:
+            break               # nenhuma troca: já está ordenado
+\end{lstlisting}
+\begin{resolucao}
+Melhor caso (vetor ordenado): a primeira passada faz $n - 1$ comparações, nenhuma troca, e o
+algoritmo para: $\Theta(n)$. Pior caso (ordem inversa): todas as passadas acontecem, com
+$(n-1) + (n-2) + \dots + 1 = \dfrac{n(n-1)}{2}$ comparações: $\Theta(n^2)$. Mesmo perfil do
+Insertion Sort — embora, na prática, o Bubble Sort faça mais trocas.
+\end{resolucao}
+
+\exercicio{C6}{\estrela{}\estrela{}}
+Uma Fila encadeada guarda só o ponteiro para o início. Qual é o custo de enfileirar $n$ elementos,
+um a um, começando da fila vazia?
+\begin{resolucao}
+Para enfileirar, é preciso percorrer até o último nó: com $t$ elementos, $t$ passos. Total:
+$0 + 1 + \dots + (n-1) = \dfrac{n(n-1)}{2}$: $\Theta(n^2)$. Com o ponteiro \codigo{fim}, seria
+$\Theta(n)$ no total (capítulo 13).
+\end{resolucao}
+
+% =====================================================================
+\section{Bloco D — questões objetivas (estilo da prova)}
+
+\exercicio{D1}{\estrela{}}
+Qual é o custo de ler \codigo{v[i]} numa lista contígua com $n$ elementos?
+\quad (a) $O(n)$ \quad (b) $O(1)$ \quad (c) $O(\log n)$ \quad (d) $O(n^2)$
+\begin{resolucao}
+\textbf{(b)}. A posição é calculada diretamente a partir do índice (Aula 1), sem percorrer nada.
+\end{resolucao}
+
+\exercicio{D2}{\estrela{}}
+Se $T(n) = 5n^3 + 100n^2 + 7$, então:
+\quad (a) $T(n) = \Theta(n)$ \quad (b) $T(n) = \Theta(n^2)$ \quad (c) $T(n) = \Theta(n^3)$ \quad (d) $T(n) = \Theta(n^5)$
+\begin{resolucao}
+\textbf{(c)}. O termo dominante é $5n^3$; desprezando a constante, $\Theta(n^3)$. O $100$ do
+segundo termo assusta, mas não muda a família.
+\end{resolucao}
+
+\exercicio{D3}{\estrela{}\estrela{}}
+Sobre o Insertion Sort, é correto afirmar:
+\begin{enumerate}[label=(\alph*), leftmargin=2em]
+  \item seu custo é $\Theta(n^2)$ para qualquer entrada;
+  \item seu melhor caso ocorre com o vetor já ordenado e é $\Theta(n)$;
+  \item seu pior caso é $\Theta(n \log n)$;
+  \item seu custo não depende da ordem inicial dos dados.
+\end{enumerate}
+\begin{resolucao}
+\textbf{(b)}. (a) é falsa: no melhor caso ele é $\Theta(n)$. (c) é falsa: o pior caso é
+$\Theta(n^2)$. (d) é falsa: a ordem inicial é justamente o que separa o melhor do pior caso.
+\end{resolucao}
+
+\exercicio{D4}{\estrela{}\estrela{}}
+Um algoritmo que faz $2^n$ passos leva 1 minuto para $n = 40$. Quanto leva para $n = 42$?
+\quad (a) 1 minuto \quad (b) 2 minutos \quad (c) 4 minutos \quad (d) 42 minutos
+\begin{resolucao}
+\textbf{(c)}. Cada $+1$ em $n$ dobra o tempo: duas dobras, $1 \times 2 \times 2 = 4$ minutos.
+\end{resolucao}
+
+\exercicio{D5}{\estrela{}}
+Quantas voltas dá o laço \codigo{while i > 1: i = i // 2}, começando com \codigo{i = 1024}?
+\quad (a) 10 \quad (b) 512 \quad (c) 1.024 \quad (d) 32
+\begin{resolucao}
+\textbf{(a)}. $1024 \to 512 \to \dots \to 1$: são $\log_2 1024 = 10$ divisões.
+\end{resolucao}
+
+\exercicio{D6}{\estrela{}}
+Qual sequência está em ordem crescente de crescimento?
+\begin{enumerate}[label=(\alph*), leftmargin=2em]
+  \item $\log n < n < n \log n < n^2 < 2^n$
+  \item $n < \log n < n^2 < n \log n < 2^n$
+  \item $\log n < n^2 < n < 2^n < n \log n$
+  \item $2^n < n^2 < n \log n < n < \log n$
+\end{enumerate}
+\begin{resolucao}
+\textbf{(a)}. É a hierarquia do capítulo 10.
+\end{resolucao}
+
+\exercicio{D7}{\estrela{}}
+Numa Fila encadeada com ponteiros para o início e para o fim, qual operação é $O(1)$?
+\quad (a) enfileirar \quad (b) buscar um valor \quad (c) obter o elemento da posição $i$ \quad (d) percorrer
+\begin{resolucao}
+\textbf{(a)}. Graças ao ponteiro \codigo{fim}. As outras precisam percorrer os nós: $O(n)$.
+\end{resolucao}
+
+\exercicio{D8}{\estrela{}\estrela{}}
+A afirmação $f(n) = O(g(n))$ significa que:
+\begin{enumerate}[label=(\alph*), leftmargin=2em]
+  \item $f$ cresce exatamente como $g$;
+  \item $f$ não cresce mais rápido que $g$, a menos de uma constante, a partir de algum $n_0$;
+  \item $f$ é o pior caso do algoritmo;
+  \item $f(n) \ge g(n)$ para todo $n$.
+\end{enumerate}
+\begin{resolucao}
+\textbf{(b)}. (a) descreve $\Theta$; (c) confunde notação com caso (capítulo 8); (d) lembra $\Omega$,
+mas sem a constante e sem o $n_0$.
+\end{resolucao}
+
+% =====================================================================
+\needspace{18\baselineskip}
+\section{Bloco E — programação}
+
+\exercicio{E1}{\estrela{}\estrela{}}
+Escreva uma busca binária que conte as comparações e verifique, para vetores ordenados de
+tamanhos 1.000, 1.000.000 e 1.000.000.000 (use \codigo{range}, que não ocupa memória), que o
+número de comparações no pior caso fica perto de $\log_2 n$.
+\begin{resolucao}
+\begin{lstlisting}
+import math
+
+def busca_binaria(v, alvo):
+    inicio, fim, comparacoes = 0, len(v) - 1, 0
+    while inicio <= fim:
+        meio = (inicio + fim) // 2
+        comparacoes += 1
+        if v[meio] == alvo:
+            return meio, comparacoes
+        if v[meio] < alvo:
+            inicio = meio + 1        # descarta a metade da esquerda
+        else:
+            fim = meio - 1           # descarta a metade da direita
+    return -1, comparacoes
+
+for n in (1_000, 1_000_000, 1_000_000_000):
+    _, c = busca_binaria(range(n), -1)          # valor ausente: pior caso
+    print(n, c, round(math.log2(n), 1))
+\end{lstlisting}
+Saída: 9, 19 e 29 comparações, para $\log_2 n$ igual a 10,0, 19,9 e 29,9. Com o valor
+ausente (menor que todos), a busca faz $\lfloor \log_2 n \rfloor$ comparações — a parte inteira de
+$\log_2 n$. Um bilhão de elementos, 29 comparações: esse é o poder do $O(\log n)$.
+\end{resolucao}
+
+\exercicio{E2}{\estrela{}\estrela{}}
+Descubra experimentalmente a família de um algoritmo: meça as comparações do Insertion Sort em
+ordem inversa para $n$ e $2n$ e calcule a razão. Faça o mesmo para a busca linear. O que as razões
+indicam?
+\begin{resolucao}
+\begin{lstlisting}
+import sys
+sys.path.append("python")               # pasta aula04-complexidade/python
+from insertion_sort import comparacoes_invertido
+
+for n in (500, 1000, 2000):
+    razao = comparacoes_invertido(2 * n) / comparacoes_invertido(n)
+    print(n, round(razao, 2))           # perto de 4: quadrático
+\end{lstlisting}
+As razões ficam perto de 4 (para $n$ grande, $\frac{(2n)^2}{n^2} = 4$): crescimento quadrático.
+Na busca linear, o pior caso tem $n$ comparações, e a razão é 2: crescimento linear. Em geral,
+se dobrar $n$ multiplica o custo por $2^k$, o algoritmo é $\Theta(n^k)$ — a mesma ideia do capítulo 1.
+\end{resolucao}

@@ -1,0 +1,72 @@
+% =====================================================================
+\chapter{Revisitando Lista, Pilha, Fila e Conjunto}\label{cap:13}
+\naaula{47}
+
+Com as ferramentas desta apostila, podemos olhar de novo para as estruturas das Aulas 1 a 3 e
+dizer, com precisão, quanto custa cada operação. Esta tabela é um ótimo resumo para a prova.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{P{3.3cm} P{4.2cm} C L}
+\cab \tc{Estrutura} & \tc{Operação} & \tc{Custo} & \tc{Por quê} \\
+Lista contígua (Aula 1)
+  & \codigo{obter(pos)} & $\Theta(1)$ & acesso direto por índice \\
+  & inserir/remover no fim & $\Theta(1)$\,* & nada a deslocar \\
+  & inserir/remover no início & $\Theta(n)$ & desloca todos \\
+  & \codigo{buscar(valor)} & $O(n)$ & melhor caso $\Theta(1)$, pior $\Theta(n)$ \\
+\rowcolor{edfundo} Lista encadeada (Aula 1)
+  & inserir/remover no início & $\Theta(1)$ & só troca referências \\
+\rowcolor{edfundo}  & inserir no fim, com ponteiro \codigo{fim} & $\Theta(1)$ & vai direto ao último nó \\
+\rowcolor{edfundo}  & \codigo{obter(pos)} & $O(n)$ & precisa percorrer os nós \\
+\rowcolor{edfundo}  & \codigo{buscar(valor)} & $O(n)$ & percorre até achar \\
+Pilha contígua (Aula 2)
+  & empilhar, desempilhar & $\Theta(1)$ & só mexe no topo \\
+  & \codigo{consultar_topo()} & $\Theta(1)$ & acesso direto ao topo \\
+\rowcolor{edfundo} Fila encadeada (Aula 2)
+  & enfileirar (com ponteiro \codigo{fim}) & $\Theta(1)$ & insere direto no fim \\
+\rowcolor{edfundo}  & desenfileirar & $\Theta(1)$ & remove direto do início \\
+Conjunto sobre lista (Aula 3)
+  & \codigo{pertence(valor)} & $O(n)$ & percorre os elementos \\
+  & \codigo{inserir(valor)}, \codigo{remover} & $O(n)$ & chamam \codigo{pertence()} \\
+  & união, interseção, diferença & $O(n \cdot m)$ & um \codigo{pertence()} por elemento \\
+\rowcolor{edfundo} \codigo{set()} do Python & \codigo{in}, \codigo{add}, \codigo{remove} & $O(1)$\,** & tabela de dispersão \\
+\end{tabularx}
+\end{center}
+{\small * Com espaço disponível (ou, na \codigo{list} do Python, em média).
+** Em média; usa uma estrutura chamada tabela de dispersão (\emph{hash}), assunto de um curso mais
+adiante.}
+
+\section{A reflexão da Aula 2, respondida}
+
+Na atividade da Aula 2, a pergunta era: \emph{por que manter um ponteiro para o fim permite
+enfileirar em $O(1)$? O que mudaria se a fila guardasse apenas o início?}
+
+Com o ponteiro \codigo{fim}, enfileirar é ir direto ao último nó e ligar o novo: um número fixo de
+passos, $\Theta(1)$. Sem ele, para achar o último nó seria preciso percorrer a fila inteira a
+partir do início: $\Theta(n)$ por enfileiramento. E enfileirar $n$ elementos, um a um, custaria
+$0 + 1 + \dots + (n - 1) = \Theta(n^2)$ — Gauss mais uma vez. No Campo Minado (capítulo 14), a
+abertura em cascata enfileira até $L \cdot C$ células: com a Fila sem \codigo{fim}, ela passaria
+de $O(L \cdot C)$ para $O((L \cdot C)^2)$.
+
+\section{Escolhendo a estrutura}
+
+\begin{itemize}
+  \item Precisa acessar por posição com frequência? \textbf{Lista contígua}.
+  \item Insere e remove muito no início, e raramente acessa por posição? \textbf{Lista encadeada}.
+  \item O último a entrar é o primeiro a sair (desfazer, histórico, navegação)? \textbf{Pilha}.
+  \item Atendimento por ordem de chegada (impressão, processos, abertura em ondas)? \textbf{Fila}.
+  \item Muitas perguntas \enquote{este valor está aqui?} e nada de duplicatas? \textbf{Conjunto} — e,
+        se forem muitas consultas, um \codigo{set()} com custo $O(1)$ em média.
+\end{itemize}
+
+\begin{exrapido}
+Qual estrutura você usaria, e com que custo por operação, para: (a) o botão \enquote{voltar} de um
+navegador; (b) os pedidos de uma lanchonete, atendidos por ordem de chegada; (c) verificar, milhares
+de vezes, se um CPF já foi cadastrado?
+\end{exrapido}
+
+\begin{respostas}
+  \resp{13.1} (a) Pilha: a última página visitada é a primeira a voltar; empilhar e desempilhar
+  em $\Theta(1)$. (b) Fila: enfileirar e desenfileirar em $\Theta(1)$, com ponteiro para o fim.
+  (c) Um conjunto; com muitas consultas, o \codigo{set()} do Python, com \codigo{in} em $O(1)$ em
+  média. Com o Conjunto sobre lista da Aula 3, cada consulta custaria $O(n)$.
+\end{respostas}
