@@ -49,3 +49,6 @@ __pycache__/
 
 # configuracoes de IDE (PyCharm)
 .idea/
+
+# arquivos de sistema do macOS
+.DS_Store
