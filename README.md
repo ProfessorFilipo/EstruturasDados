@@ -1,6 +1,6 @@
 # Estruturas de Dados — UniLasalle EAD
 
-Repositório de apoio da disciplina — Grau 1. Um material por aula, cada
+Repositório de apoio da disciplina. Um material por aula, cada
 um com seu próprio código em C e Python, exercícios guiados e gabarito.
 
 ## Aulas
@@ -11,6 +11,7 @@ um com seu próprio código em C e Python, exercícios guiados e gabarito.
 | 2 | Pilhas e Filas | [`aula02-pilhas-filas/`](aula02-pilhas-filas/) |
 | 3 | Estruturas Lineares (Consolidação) + Conjuntos | [`aula03-conjuntos/`](aula03-conjuntos/) |
 | 4 | Complexidade de Algoritmos — contagem de operações, O, Ω e Θ, Insertion Sort + atividade Campo Minado | [`aula04-complexidade/`](aula04-complexidade/) |
+| 5 | Classificação e Pesquisa — pesquisa sequencial e binária, Insertion, Merge e Quicksort, limite Ω(n log n), Counting e Radix Sort | [`aula05-classificacao-pesquisa/`](aula05-classificacao-pesquisa/) |
 
 Cada pasta de aula tem sua própria estrutura (`c/`, `python/`,
 `exercicios/`, `solucoes/`) e seu próprio README com instruções de uso —

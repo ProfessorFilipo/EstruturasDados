@@ -26,6 +26,19 @@ aula03-conjuntos/revisao/c/encadeada
 aula03-conjuntos/revisao/c/demo_pilha
 aula03-conjuntos/revisao/c/demo_fila
 
+# binários compilados — Aula 5
+aula05-classificacao-pesquisa/c/busca_sequencial
+aula05-classificacao-pesquisa/c/busca_binaria
+aula05-classificacao-pesquisa/c/insertion_estavel
+aula05-classificacao-pesquisa/c/merge_sort
+aula05-classificacao-pesquisa/c/quick_sort
+aula05-classificacao-pesquisa/c/limite_inferior
+aula05-classificacao-pesquisa/c/counting_radix
+aula05-classificacao-pesquisa/solucoes/c/ex03
+aula05-classificacao-pesquisa/solucoes/c/ex07
+aula05-classificacao-pesquisa/solucoes/c/ex08
+aula05-classificacao-pesquisa/solucoes/c/ex13
+
 # genérico
 *.o
 *.out
