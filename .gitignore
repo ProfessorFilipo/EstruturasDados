@@ -39,6 +39,28 @@ aula05-classificacao-pesquisa/solucoes/c/ex07
 aula05-classificacao-pesquisa/solucoes/c/ex08
 aula05-classificacao-pesquisa/solucoes/c/ex13
 
+# binários compilados — Aula 6
+aula06-grafos-representacao/c/p1_matriz_adjacencias
+aula06-grafos-representacao/c/p2_graus
+aula06-grafos-representacao/c/p3_lista_adjacencias
+aula06-grafos-representacao/c/p4_comparando_representacoes
+aula06-grafos-representacao/solucoes/c/ex06
+aula06-grafos-representacao/solucoes/c/ex07
+aula06-grafos-representacao/solucoes/c/ex08
+aula06-grafos-representacao/solucoes/c/ex09
+aula06-grafos-representacao/solucoes/c/ex10
+
+# binários compilados — Aula 7
+aula07-grafos-buscas-caminhos/c/p1_bfs
+aula07-grafos-buscas-caminhos/c/p2_dfs
+aula07-grafos-buscas-caminhos/c/p3_componentes
+aula07-grafos-buscas-caminhos/c/p4_dijkstra
+aula07-grafos-buscas-caminhos/solucoes/c/ex06
+aula07-grafos-buscas-caminhos/solucoes/c/ex07
+aula07-grafos-buscas-caminhos/solucoes/c/ex08
+aula07-grafos-buscas-caminhos/solucoes/c/ex09
+aula07-grafos-buscas-caminhos/solucoes/c/ex10
+
 # genérico
 *.o
 *.out
