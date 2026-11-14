@@ -12,6 +12,8 @@ um com seu próprio código em C e Python, exercícios guiados e gabarito.
 | 3 | Estruturas Lineares (Consolidação) + Conjuntos | [`aula03-conjuntos/`](aula03-conjuntos/) |
 | 4 | Complexidade de Algoritmos — contagem de operações, O, Ω e Θ, Insertion Sort + atividade Campo Minado | [`aula04-complexidade/`](aula04-complexidade/) |
 | 5 | Classificação e Pesquisa — pesquisa sequencial e binária, Insertion, Merge e Quicksort, limite Ω(n log n), Counting e Radix Sort | [`aula05-classificacao-pesquisa/`](aula05-classificacao-pesquisa/) |
+| 6 | Grafos I — conceitos, tipos de grafo, grau, caminhos, componentes e árvores; matriz e lista de adjacências | [`aula06-grafos-representacao/`](aula06-grafos-representacao/) |
+| 7 | Grafos II — busca em largura (BFS), busca em profundidade (DFS), componentes conexas e caminho mínimo (Dijkstra) | [`aula07-grafos-buscas-caminhos/`](aula07-grafos-buscas-caminhos/) |
 
 Cada pasta de aula tem sua própria estrutura (`c/`, `python/`,
 `exercicios/`, `solucoes/`) e seu próprio README com instruções de uso —
